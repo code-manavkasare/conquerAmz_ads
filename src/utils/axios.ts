@@ -1,68 +1,62 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
+import api from "../api";
 import config from "../config";
-const { ADS_API, ADS_TEST_API, CLIENT_ID, SCOPE } = config;
-const dev = process.env.NODE_ENV === "dev";
+import accessToken from "./accessToken";
+const { ADS_API, CLIENT_ID, PROFILE_ID } = config;
 
-console.log("urls", ADS_API, ADS_TEST_API);
-const instance = axios.create({
-  baseURL: dev ? ADS_TEST_API : ADS_API,
-});
+let instance: AxiosInstance;
+
+(async () => {
+  // Generating accessToken
+  const token = await accessToken();
+  // Creating a reusable axios instance
+  instance = axios.create({
+    baseURL: ADS_API,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Amazon-Advertising-API-ClientId": CLIENT_ID,
+      "Amazon-Advertising-API-Scope": PROFILE_ID,
+    },
+  });
+  // Running the script once axios is setup
+  await api();
+})();
 
 export const get = async (endpoint: string) => {
   try {
-    const _endpoint = endpoint.includes("?")
-      ? endpoint +
-        `?Amazon-Advertising-API-ClientId=${CLIENT_ID}&Amazon-Advertising-API-Scope=${SCOPE}`
-      : endpoint +
-        `&Amazon-Advertising-API-ClientId=${CLIENT_ID}&Amazon-Advertising-API-Scope=${SCOPE}`;
-    const response = await instance.get(encodeURI(_endpoint));
+    console.log("[GET]...", endpoint);
+    const response = await instance.get(endpoint);
     const data = await response.data;
-    console.log("[GET]", endpoint, "->", data);
-    if (data.code === "401") {
-      return {
-        error: {
-          message: "Amazon Ads Api not authorized",
-        },
-      };
-    } else if (data.code === "404") {
-      return {
-        error: {
-          message: "The requested resource was not found",
-        },
-      };
-    } else if (data.code === "200") {
-      return {
-        error: null,
-        data,
-      };
-    } else {
-      return {
-        error: {
-          message: "An unexpected error occured",
-        },
-      };
-    }
+    console.log("[GET] success:", endpoint, "->", data);
+    return {
+      error: null,
+      data,
+    };
   } catch (error: any) {
-    console.log("[GET] error", endpoint, "->", error);
     if (error.response) {
-      console.log("error resposne", error.response);
+      console.log("[GET] error", endpoint, "->", error.response.data);
+      // console.log("[GET] error resposne", error.response);
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       return {
         error: {
-          message: error.response.statusText,
+          message: error.response.data.details,
         },
       };
     } else if (error.request) {
+      console.log("[GET] error", endpoint, "->", error.request);
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
+      // console.log("[GET] error request", error.request);
       return {
         error: {
           message: error.request,
         },
       };
     } else {
+      console.log("[GET] error", endpoint, "->", error);
+      // console.log("[GET] error", error);
       // Something happened in setting up the request that triggered an Error
       return {
         error: {
@@ -75,49 +69,25 @@ export const get = async (endpoint: string) => {
 
 export const post = async (endpoint: string, payload: any) => {
   try {
-    const _endpoint = endpoint.includes("?")
-      ? endpoint +
-        `?Amazon-Advertising-API-ClientId=${CLIENT_ID}&Amazon-Advertising-API-Scope=${SCOPE}`
-      : endpoint +
-        `&Amazon-Advertising-API-ClientId=${CLIENT_ID}&Amazon-Advertising-API-Scope=${SCOPE}`;
-    const response = await instance.post(_endpoint, payload);
+    const response = await instance.post(endpoint, payload);
     const data = await response.data;
     console.log("[POST]", endpoint, "->", data);
-    if (data.code === "401") {
-      return {
-        error: {
-          message: "Amazon Ads Api not authorized",
-        },
-      };
-    } else if (data.code === "404") {
-      return {
-        error: {
-          message: "The requested resource was not found",
-        },
-      };
-    } else if (data.code === "200") {
-      return {
-        error: null,
-        data,
-      };
-    } else {
-      return {
-        error: {
-          message: "An unexpected error occured",
-        },
-      };
-    }
+    return {
+      error: null,
+      data,
+    };
   } catch (error: any) {
-    console.log("[POST] error", endpoint, "->", error);
     if (error.response) {
+      console.log("[POST] error", endpoint, "->", error.resposne.data);
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       return {
         error: {
-          message: error.response.data,
+          message: error.response.data.details,
         },
       };
     } else if (error.request) {
+      console.log("[POST] error", endpoint, "->", error.request);
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
@@ -127,6 +97,7 @@ export const post = async (endpoint: string, payload: any) => {
         },
       };
     } else {
+      console.log("[POST] error", endpoint, "->", error);
       // Something happened in setting up the request that triggered an Error
       return {
         error: {

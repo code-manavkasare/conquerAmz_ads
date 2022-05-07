@@ -9,11 +9,11 @@ const _get = async (endpoint: string) => {
 };
 
 const campaigns = async () => {
-  return await _get("​/v2​/sp​/campaigns");
+  return await _get("/v2/sp/campaigns");
 };
 
 const adGroups = async () => {
-  return await _get("​/v2​/sp​/campaigns");
+  return await _get("/v2/sp/adGroups");
 };
 
 const adGroupBidRecommendations = async (adGroupId: string) => {
@@ -21,11 +21,11 @@ const adGroupBidRecommendations = async (adGroupId: string) => {
 };
 
 const keywords = async () => {
-  return await _get("​/v2​/sp​/keywords");
+  return await _get("/v2/sp/keywords");
 };
 
 const keywordBidRecommendations = async (keywordId: string) => {
-  return await _get(`/v2/sp/adGroups/${keywordId}/bidRecommendations`);
+  return await _get(`/v2/sp/keywords/${keywordId}/bidRecommendations`);
 };
 
 const negativeKeywords = async () => {
@@ -101,6 +101,7 @@ export default async () => {
     productTargets: _productTargets,
     negativeProductTargets: _negativeProductTargets,
   };
+  console.log("creating file: ", payload);
 
   createFile(payload);
 };
