@@ -1,2 +1,8 @@
-add me on whatsapp so we can talk better about the project
-![whatsapp_scan](https://user-images.githubusercontent.com/2906581/165601670-26f90a4d-17fb-4ff9-849f-3bb9b4a245d4.jpg)
+To run the script:
+```
+yarn start
+```
+
+This will run the script and you'll get logs of what endpoints are being called and their responses(errors and successes). Once all the api's are hit, the output is then stored into output.json. 
+
+Note: The script takes around 1200s to execute
