@@ -71,11 +71,12 @@ export default async () => {
       const _bidRecommendation = await adGroupBidRecommendations(
         _adGroups[i].adGroupId
       );
-      _bidRecommendations.push(_bidRecommendation);
+      if (_bidRecommendation) _bidRecommendations.push(_bidRecommendation);
       const _adGroupSuggestedKeyword = await adGroupSuggestedKeywords(
         _adGroups[i].adGroupId
       );
-      _adGroupSuggestedKeywords.push(_adGroupSuggestedKeyword);
+      if (_adGroupSuggestedKeyword)
+        _adGroupSuggestedKeywords.push(_adGroupSuggestedKeyword);
     }
   }
 
@@ -84,7 +85,8 @@ export default async () => {
       const _keywordRecommendation = await keywordBidRecommendations(
         _keywords[i].keywordId
       );
-      _keywordRecommendations.push(_keywordRecommendation);
+      if (_keywordRecommendation)
+        _keywordRecommendations.push(_keywordRecommendation);
     }
   }
 
