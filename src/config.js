@@ -1,5 +1,3 @@
-import { IConfig } from "./types";
-
 const config = {
   ADS_API: process.env.ADS_API,
   ADS_TEST_API: process.env.ADS_TEST_API,
@@ -9,7 +7,7 @@ const config = {
   REFRESH_TOKEN: process.env.REFRESH_TOKEN,
   ACCESS_TOKEN: process.env.ACCESS_TOKEN,
   REGION: process.env.REGION,
-  PROFILE_ID: process.env.PROFILE_ID
-} as IConfig;
+  PROFILE_ID: process.env.PROFILE_ID,
+};
 
 export default config;

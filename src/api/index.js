@@ -2,7 +2,7 @@ import { get } from "../utils/axios";
 import createFile from "../utils/createFile";
 
 // Refactored to handle errors and respond with suitable data
-const _get = async (endpoint: string) => {
+const _get = async (endpoint) => {
   const response = await get(endpoint);
   if (!response.error) return response.data;
   return null;
@@ -16,7 +16,7 @@ const adGroups = async () => {
   return await _get("/v2/sp/adGroups");
 };
 
-const adGroupBidRecommendations = async (adGroupId: string) => {
+const adGroupBidRecommendations = async (adGroupId) => {
   return await _get(`/v2/sp/adGroups/${adGroupId}/bidRecommendations`);
 };
 
@@ -24,7 +24,7 @@ const keywords = async () => {
   return await _get("/v2/sp/keywords");
 };
 
-const keywordBidRecommendations = async (keywordId: string) => {
+const keywordBidRecommendations = async (keywordId) => {
   return await _get(`/v2/sp/keywords/${keywordId}/bidRecommendations`);
 };
 
@@ -36,7 +36,7 @@ const campaignNegativeKeywords = async () => {
   return await _get(`/v2/sp/campaignNegativeKeywords`);
 };
 
-const adGroupSuggestedKeywords = async (adGroupId: string) => {
+const adGroupSuggestedKeywords = async (adGroupId) => {
   return await _get(`/v2/sp/adGroups/${adGroupId}/suggested/keywords`);
 };
 

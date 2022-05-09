@@ -4,7 +4,7 @@ import config from "../config";
 import accessToken from "./accessToken";
 const { ADS_API, CLIENT_ID, PROFILE_ID } = config;
 
-let instance: AxiosInstance;
+let instance;
 
 (async () => {
   // Generating accessToken
@@ -22,7 +22,7 @@ let instance: AxiosInstance;
   await api();
 })();
 
-export const get = async (endpoint: string) => {
+export const get = async (endpoint) => {
   try {
     console.log("[GET]...", endpoint);
     const response = await instance.get(endpoint);
@@ -32,7 +32,7 @@ export const get = async (endpoint: string) => {
       error: null,
       data,
     };
-  } catch (error: any) {
+  } catch (error) {
     if (error.response) {
       console.log("[GET] error", endpoint, "->", error.response.data);
       // console.log("[GET] error resposne", error.response);
@@ -67,7 +67,7 @@ export const get = async (endpoint: string) => {
   }
 };
 
-export const post = async (endpoint: string, payload: any) => {
+export const post = async (endpoint, payload) => {
   try {
     const response = await instance.post(endpoint, payload);
     const data = await response.data;
@@ -76,7 +76,7 @@ export const post = async (endpoint: string, payload: any) => {
       error: null,
       data,
     };
-  } catch (error: any) {
+  } catch (error) {
     if (error.response) {
       console.log("[POST] error", endpoint, "->", error.resposne.data);
       // The request was made and the server responded with a status code
