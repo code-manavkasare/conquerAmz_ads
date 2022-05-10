@@ -10,4 +10,4 @@ const config = {
   PROFILE_ID: process.env.PROFILE_ID,
 };
 
-export default config;
+module.exports = config;

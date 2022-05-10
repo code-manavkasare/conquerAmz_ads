@@ -1,5 +1,5 @@
-import { get } from "../utils/axios";
-import createFile from "../utils/createFile";
+const { get } = require("../utils/axios");
+const createFile = require("../utils/createFile");
 
 // Refactored to handle errors and respond with suitable data
 const _get = async (endpoint) => {
@@ -52,7 +52,7 @@ const negativeProductTargets = async () => {
   return await _get(`/v2/sp/negativeTargets`);
 };
 
-export default async () => {
+module.exports = async () => {
   const _campaigns = await campaigns();
   const _adGroups = await adGroups();
   const _keywords = await keywords();

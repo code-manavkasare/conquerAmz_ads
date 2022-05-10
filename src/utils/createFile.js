@@ -1,7 +1,7 @@
 // file system module to perform file operations
-import fs from "fs";
+const fs = require("fs");
 
-export default (data) => {
+module.exports = (data) => {
   var jsonContent = JSON.stringify(data);
 
   fs.writeFile("output.json", jsonContent, "utf8", function (err) {
